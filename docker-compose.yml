@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+
+  web:
+    build: ./server
+    command: uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    volumes:
+      - ./server:/usr/src/app
+    networks:
+      - net
+    ports:
+      - 8004:8000
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/foo
+    depends_on:
+      - redis
+      - db
+
+  worker:
+    build: ./worker
+    container_name: worker
+    networks:
+      - net
+    depends_on:
+      - redis
+      - db
+
+  db:
+    image: postgres:13.4
+    command: postgres -c 'max_connections=500'
+    networks:
+      - net
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=foo
+
+  redis:
+    image: redis
+    networks:
+      - net
+    ports:
+      - 6379:6379
+
+networks:
+  net:

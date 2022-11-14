@@ -1,0 +1,4 @@
+asyncpg==0.24.0
+uvicorn==0.15.0
+redis==4.3.4
+fastapi_asyncpg==1.0.1
