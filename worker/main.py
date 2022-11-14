@@ -59,7 +59,7 @@ async def download_and_save_user(username: str, conn):
     
 
 async def handle_notification():
-    r = redis.Redis(host='localhost')
+    r = redis.Redis(host='redis')
     pubsub = r.pubsub()
     conn = await asyncpg.connect(DATABASE_URL)
     await pubsub.subscribe(CHANNEL_NAME)

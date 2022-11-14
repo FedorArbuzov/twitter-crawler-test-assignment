@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 from fastapi_asyncpg import configure_asyncpg
 
 app = FastAPI()
-r = redis.Redis(host='localhost', port=6379, db=0)
+r = redis.Redis(host='redis', port=6379, db=0)
 CHANNEL_NAME = os.environ.get('CHANNEL_NAME', 'notification')
 DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/foo')
 db = configure_asyncpg(app, DATABASE_URL)
